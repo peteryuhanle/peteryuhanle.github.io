@@ -1,0 +1,91 @@
+// dht sensor library - Version: Latest 
+#include <dht.h>
+
+#include <LiquidCrystal.h> // includes the LiquidCrystal Library 
+#define dht_apin 11
+
+
+dht DHT;
+
+
+const int buttonPin = 8;     // the number of the pushbutton pin
+const int SlideSwitch = 9;
+int buttonState = 0;
+int SSstate = 0;
+int set_high = 90;
+int set_low = 60;
+
+LiquidCrystal lcd(1, 2, 4, 5, 6, 7); // Creates an LC object. Parameters: (rs, enable, d4, d5, d6, d7) 
+void setup() { 
+
+ lcd.begin(16,2); // Initializes the interface to the LCD screen, and specifies the dimensions (width and height) of the display } 
+
+ // initialize the pushbutton pin as an input:
+ pinMode(buttonPin, INPUT);
+ pinMode(A1, INPUT);
+ pinMode(SlideSwitch,INPUT);
+
+}
+void loop() { 
+  
+ checkbutton();
+ DHT.read11(dht_apin);
+ lcd.print("Temperature:"); // Prints "temperature" on the LCD 
+ lcd.setCursor(5,1); // Sets the location at which subsequent text written to the LCD will be displayed 
+ int t= (DHT.temperature)*1.8 +32;
+ lcd.print(t);
+ lcd.print('F');
+ delay(3000); 
+ lcd.clear(); // Clears the display 
+ delay(500);
+ checkbutton();
+ int h = DHT.humidity;
+ lcd.print("Humidity:"); 
+ lcd.setCursor(5,1); // Sets the location at which subsequent text written to the LCD will be displayed 
+ lcd.print(h); 
+ lcd.print('%');
+ delay(3000); 
+ lcd.clear(); // Clears the LCD screen 
+delay(500);
+}
+
+
+void checkbutton(){
+  buttonState = digitalRead(buttonPin);
+ if (buttonState == HIGH) {
+   lcd.print("Setting Mode:");
+  
+   delay(2000);
+   buttonState = digitalRead(buttonPin);
+   
+   while(buttonState == LOW){
+    delay(100);
+    SSstate = digitalRead(SlideSwitch);
+    float analog_in = analogRead(A1);
+    if (SSstate == HIGH){
+    int set_high = (35.0 / 1023.0)*analog_in+64;
+    lcd.setCursor(2,1); // Sets the location at which subsequent text written to the LCD will be displayed 
+    lcd.print("High"); 
+    lcd.setCursor(7,1); // Sets the location at which subsequent text written to the LCD will be displayed 
+    lcd.print(set_high);
+    lcd.print('F');
+    lcd.setCursor(6,1);
+    lcd.blink(); //Displays the blinking LCD cursor 
+    buttonState = digitalRead(buttonPin);
+    }
+    if (SSstate == LOW){
+    int set_low = (35.0 / 1023.0)*analog_in+34;
+    lcd.setCursor(2,1); // Sets the location at which subsequent text written to the LCD will be displayed 
+    lcd.print("Low "); 
+    lcd.setCursor(7,1); // Sets the location at which subsequent text written to the LCD will be displayed 
+    lcd.print(set_low);
+    lcd.print('F');
+    lcd.setCursor(6,1);
+    lcd.blink(); //Displays the blinking LCD cursor 
+    buttonState = digitalRead(buttonPin);
+    }
+    }
+ lcd.noBlink();
+ lcd.clear(); // Clears the display 
+}
+}
