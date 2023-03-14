@@ -73,11 +73,11 @@
 }
 
 .image__title{
-  font-size:2em;
+  font-size:1 em;
   font-weight: bold;
 }
 
 .image__description{
-  font-size:1.25em;
+  font-size:0.65 em;
   font-weight: 0.25em;
 }
