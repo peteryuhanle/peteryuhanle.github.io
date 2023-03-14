@@ -59,8 +59,8 @@
   height:100%;
   background:rgba(0, 0, 0, 0.6);
   color:rgb(255, 255, 255);
-  font-family:'Quicksand',sans-serif;
-  display: 'flex';
+  font-family:'Quicksand', sans-serif;
+  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
