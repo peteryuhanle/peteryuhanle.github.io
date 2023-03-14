@@ -43,6 +43,7 @@
 
 .image___origin{
   position: relative;
+  width:200px;
 }
 
 .image___img{
@@ -64,6 +65,7 @@
   align-items: center;
   justify-content: center;
   opacity: 0;
+  transition: opacity 0.25s;
 }
 
 .image__overlay:hover{
